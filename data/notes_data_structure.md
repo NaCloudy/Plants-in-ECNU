@@ -13,6 +13,14 @@
 	
 	- 植物所在经纬度longitude、latitude
 	
+		> 闵行校区范围（大致）
+		>
+		> longitude∈ [121.44, 121.46], latitide∈ [31.00, 31.05]
+		>
+		> 中北校区范围（大致）
+		>
+		> longitude∈ [121.40, 121.41], latitide∈ [31.20, 31.24]
+	
 	- 植物所在校区place
 	
 	- 植物图片images
