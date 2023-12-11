@@ -4,8 +4,9 @@
 
 - 数据
 
-	- `all_trees.json`，所有植物的信息（不含template中的长文本）
-	- `all_templates.json`，所有植物类型templates的详细信息（包含长文本）
+  - `all_trees.json`，所有植物的信息（不含template中的长文本）
+  - `all_templates.json`，所有植物类型templates的详细信息（包含长文本）
+  - `data_for_funnel.json`，用于sankey图数据可视化，里面是手动修改过学院的所有owner数据。
 
 - 代码
 
@@ -22,7 +23,7 @@
 
 - statmodel
 
-	- 用来预测下一棵最有可能被领养的树
+	- => 用来预测下一棵最有可能被领养的树
 
 	- `pred_tree.ipynb`，模型代码，不建议运行。使用aic筛选变量，逻辑回归拟合。
 
@@ -33,3 +34,10 @@
 		> （2）【可选】根据用户条件再筛选，如校区`place`、植物品种`template`、植物习性`habit`
 		>
 		> （3）被认养概率`pre_1`取值最大的
+
+- datavis
+	- => 数据可视化
+	- sankey
+		- 桑基图
+		- `sankey.ipynb`，用于生成桑基图的python代码
+		- `sankey.html`，生成的桑基图html
