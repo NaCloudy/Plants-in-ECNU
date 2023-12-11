@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en" style="height: 100%">
+  <head>
+    <meta charset="utf-8" />
+    <script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+  </head>
+  <body style="height: 100%; margin: 0">
+    <div id="container" style="height: 100%"></div>
+
+    <script
+      type="text/javascript"
+      src="https://registry.npmmirror.com/echarts/5.4.3/files/dist/echarts.min.js"
+    ></script>
+
+    <script type="text/javascript">
+      function sunburst_func(data) {
+        var dom = document.getElementById("container");
+        var myChart = echarts.init(dom, null, {
+          renderer: "canvas",
+          useDirtyRect: false,
+        });
+        var app = {};
+
+        var option;
+
+        const plantData = {};
+        for (let i = 0; i < data.length; i++) {
+          const habit = data[i].template.habit;
+          if (!plantData[habit]) {
+            plantData[habit] = {
+              name: habit,
+              value: 0,
+              children: {},
+            };
+          }
+          plantData[habit].value += 1;
+
+          const branch = data[i].template.branch;
+          if (!plantData[habit].children[branch]) {
+            plantData[habit].children[branch] = {
+              name: branch,
+              value: 0,
+              children: {},
+            };
+          }
+          plantData[habit].children[branch].value += 1;
+
+          const name = data[i].template.name;
+          if (!plantData[habit].children[branch].children[name]) {
+            plantData[habit].children[branch].children[name] = {
+              name: name,
+              value: 0,
+            };
+          }
+          plantData[habit].children[branch].children[name].value += 1;
+        }
+
+        const dataPair = [];
+        for (const habit in plantData) {
+          const habitChild = {
+            name: plantData[habit].name,
+            value: plantData[habit].value,
+            children: [],
+          };
+          for (const branch in plantData[habit].children) {
+            const branchChild = {
+              name: plantData[habit].children[branch].name,
+              value: plantData[habit].children[branch].value,
+              children: [],
+            };
+            for (const name in plantData[habit].children[branch].children) {
+              const nameChild =
+                plantData[habit].children[branch].children[name];
+              branchChild.children.push(nameChild);
+            }
+            habitChild.children.push(branchChild);
+          }
+          dataPair.push(habitChild);
+        }
+
+        option = {
+          visualMap: {
+            type: "continuous", //continuous //piecewise
+            min: 5,
+            max: 170,
+            //splitNumber: 7,
+            inRange: {
+              //color: ["#2F93C8", "#AEC48F", "#FFDB5C", "#F98862"],
+              color: [
+                "#b3de69",
+                "#8dd3c7",
+                "#80b1d3",
+                "#bebada",
+                "#DC8FD9",
+                "#fccde5",
+                "#FFE65F",
+              ],
+              itemHeight: 200,
+              colorAlpha: 0.85,
+            },
+            // outOfRange: {
+            //   color: ["#fff"],
+            // },
+          },
+          series: {
+            type: "sunburst",
+            data: dataPair,
+            sort: "aesc",
+            radius: [0, "90%"],
+            label: {
+              rotate: "radial",
+              minAngle: 1,
+            },
+            labelLine: {
+              show: true,
+            },
+            labelLayout: {
+              hideOverlap: true,
+            },
+            emphasis: {
+              focus: "ancestor",
+            },
+            nodeClick: "rootToNode",
+            itemStyle: {
+              borderWidth: 1,
+              borderColor: "white",
+            },
+            // tooltip: {
+            //   show: true,
+            //   trigger: "item",
+            //   formatter: "{b}<br />{c}",
+            // },
+            levels: [
+              {},
+              {
+                r0: "5%",
+                r: "35%",
+                labelLayout: {
+                  moveOverlap: "shiftY",
+                },
+              },
+              {
+                r0: "35%",
+                r: "65%",
+              },
+              {
+                r0: "65%",
+                r: "98%",
+              },
+            ],
+          },
+        };
+
+        if (option && typeof option === "object") {
+          myChart.setOption(option);
+        }
+
+        window.addEventListener("resize", myChart.resize);
+      }
+      d3.json("all_trees.json", function (data) {
+        sunburst_func(data);
+      });
+    </script>
+  </body>
+</html>
