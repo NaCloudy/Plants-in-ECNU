@@ -6,7 +6,7 @@
 
   - `all_trees.json`，所有植物的信息（不含template中的长文本）
   - `all_templates.json`，所有植物类型templates的详细信息（包含长文本）
-  - `data_for_funnel.json`，用于sankey图数据可视化，里面是手动修改过学院的所有owner数据。
+  - `data_for_sankey.json`，用于sankey图数据可视化，里面是手动修改过学院的所有owner数据。
 
 - 代码
 
@@ -38,6 +38,6 @@
 - datavis
 	- => 数据可视化
 	- sankey
-		- 桑基图
+		- => 桑基图
 		- `sankey.ipynb`，用于生成桑基图的python代码
 		- `sankey.html`，生成的桑基图html
