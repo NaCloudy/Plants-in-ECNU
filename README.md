@@ -46,3 +46,7 @@
 	  - => 旭日图，展示校内登记的植物分布
 	  - `sunburst.ipynb`，用于生成旭日图所需数据
 	  - `sunburst.html`，定义旭日图
+	- parallel
+	  - => 平行坐标轴，展示校内植物的高度、胸径等维度数据
+	  - `parallel.ipynb`，用于生成平行坐标轴的python代码
+	  - `parallel.html`，生成的平行坐标轴html
