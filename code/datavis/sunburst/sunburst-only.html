@@ -23,69 +23,12 @@
 
         var option;
 
-        const plantData = {};
-        for (let i = 0; i < data.length; i++) {
-          const habit = data[i].template.habit;
-          if (!plantData[habit]) {
-            plantData[habit] = {
-              name: habit,
-              value: 0,
-              children: {},
-            };
-          }
-          plantData[habit].value += 1;
-
-          const branch = data[i].template.branch;
-          if (!plantData[habit].children[branch]) {
-            plantData[habit].children[branch] = {
-              name: branch,
-              value: 0,
-              children: {},
-            };
-          }
-          plantData[habit].children[branch].value += 1;
-
-          const name = data[i].template.name;
-          if (!plantData[habit].children[branch].children[name]) {
-            plantData[habit].children[branch].children[name] = {
-              name: name,
-              value: 0,
-            };
-          }
-          plantData[habit].children[branch].children[name].value += 1;
-        }
-
-        const dataPair = [];
-        for (const habit in plantData) {
-          const habitChild = {
-            name: plantData[habit].name,
-            value: plantData[habit].value,
-            children: [],
-          };
-          for (const branch in plantData[habit].children) {
-            const branchChild = {
-              name: plantData[habit].children[branch].name,
-              value: plantData[habit].children[branch].value,
-              children: [],
-            };
-            for (const name in plantData[habit].children[branch].children) {
-              const nameChild =
-                plantData[habit].children[branch].children[name];
-              branchChild.children.push(nameChild);
-            }
-            habitChild.children.push(branchChild);
-          }
-          dataPair.push(habitChild);
-        }
-
         option = {
           visualMap: {
-            type: "continuous", //continuous //piecewise
+            type: "continuous",
             min: 5,
             max: 170,
-            //splitNumber: 7,
             inRange: {
-              //color: ["#2F93C8", "#AEC48F", "#FFDB5C", "#F98862"],
               color: [
                 "#b3de69",
                 "#8dd3c7",
@@ -98,13 +41,10 @@
               itemHeight: 200,
               colorAlpha: 0.85,
             },
-            // outOfRange: {
-            //   color: ["#fff"],
-            // },
           },
           series: {
             type: "sunburst",
-            data: dataPair,
+            data: data,
             sort: "aesc",
             radius: [0, "90%"],
             label: {
@@ -125,11 +65,6 @@
               borderWidth: 1,
               borderColor: "white",
             },
-            // tooltip: {
-            //   show: true,
-            //   trigger: "item",
-            //   formatter: "{b}<br />{c}",
-            // },
             levels: [
               {},
               {
@@ -157,7 +92,7 @@
 
         window.addEventListener("resize", myChart.resize);
       }
-      d3.json("all_trees.json", function (data) {
+      d3.json("data_for_sunburst.json", function (data) {
         sunburst_func(data);
       });
     </script>

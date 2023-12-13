@@ -6,14 +6,10 @@
 
   - `all_trees.json`，所有植物的信息（不含template中的长文本）
   - `all_templates.json`，所有植物类型templates的详细信息（包含长文本）
-  - `data_for_sankey.json`，用于sankey图数据可视化，里面是手动修改过学院的所有owner数据。
-  - `data_for_sunburst.json`，用于sunburst图数据可视化。
-
 - 代码
 
 	- `get_trees_data.py`，爬取植物信息的代码，其结果为`all_trees.json`
 	- `get_templates_data.py`，在`get_trees_data.py`的基础上爬取植物信息的代码，其结果为`all_templates.json`
-
 - 文档
 
 	- `notes_charles.md`，关于charles的使用备忘&获取到的有用url
@@ -42,11 +38,15 @@
 		- => 桑基图，展示认养植物所属学院&植物类型
 		- `sankey.ipynb`，用于生成桑基图的python代码
 		- `sankey.html`，生成的桑基图html
+		- `data_for_sankey.json`，用于sankey图数据可视化，里面是手动修改过学院的所有owner数据
 	- sunburst
 	  - => 旭日图，展示校内登记的植物分布
 	  - `sunburst.ipynb`，用于生成旭日图所需数据
 	  - `sunburst.html`，定义旭日图
+	  - `data_for_sunburst.json`，用于sunburst图数据可视化
 	- parallel
 	  - => 平行坐标轴，展示校内植物的高度、胸径等维度数据
 	  - `parallel.ipynb`，用于生成平行坐标轴的python代码
 	  - `parallel.html`，生成的平行坐标轴html
+
+### ana_emo文件夹
