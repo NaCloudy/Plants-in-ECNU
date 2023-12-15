@@ -50,3 +50,25 @@
 	  - `parallel.html`，生成的平行坐标轴html
 
 ### ana_emo文件夹
+
+- raw_data
+  
+  	- => 用于情感分析的源数据
+  	- `data.xlsx`， 每棵植物上的题词与留言
+
+- code
+
+   	- => 调用讯飞星火大模型的Python接口，针对raw_data文件夹下的数据进行情感分析
+   	- `xlsx_processing.py`，对`data.xlsx`进行数据清洗
+   	- `SparkApi.py`，大模型api
+   	- `main.py`，调用api对清洗后的数据进行情感分析
+
+   	- `__pycache__` 文件夹，大模型内核
+
+- res
+  	- => 数据处理后的结果
+  	- `test.xlsx`, `xlsx.processing.py` 处理后的数据
+  	- `new_test.xlsx`, 添加了情感分析后的数据
+  
+ 
+  
