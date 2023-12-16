@@ -2,19 +2,29 @@
 
 ### data文件夹
 
-- 数据
+- `all_trees.json`，所有植物的信息（不含template中的长文本）
+- `all_templates.json`，所有植物类型templates的详细信息（包含长文本）
 
-  - `all_trees.json`，所有植物的信息（不含template中的长文本）
-  - `all_templates.json`，所有植物类型templates的详细信息（包含长文本）
-- 代码
+- `notes_charles.md`，关于charles的使用备忘&获取到的有用url
 
-	- `get_trees_data.py`，爬取植物信息的代码，其结果为`all_trees.json`
-	- `get_templates_data.py`，在`get_trees_data.py`的基础上爬取植物信息的代码，其结果为`all_templates.json`
-- 文档
+- `notes_data_structure.md`，描述了`all_trees.json`和`all_templates.json`的数据结构及各个字段含义
 
-	- `notes_charles.md`，关于charles的使用备忘&获取到的有用url
+- icon
+	- => 存放植物图标图片的文件夹
+	- 里面每个文件的名称都是`xxx.jpg`，命名同icon字段中url内图片的名称
 
-	- `notes_data_structure.md`，描述了`all_trees.json`和`all_templates.json`的数据结构及各个字段含义
+
+- get_data_code
+  - => 获取植物信息的爬虫代码
+  - `get_trees_data.py`，爬取植物信息的代码，其结果为`all_trees.json`
+  - `get_templates_data.py`，在`get_trees_data.py`的基础上爬取植物信息的代码，其结果为`all_templates.json`
+
+
+- get_icon_code
+	- => 获取植物图标的代码
+	- `get_icon.ipynb`，从`all_templates.json`中获取icon字段url并保存为`icon.json`的代码
+	- `icon.json`，存放了植物图标的url
+	- `icon.txt`，对`icon.json`进行修改以用于下载的代码
 
 ### code文件夹
 
@@ -62,7 +72,7 @@
    	- `xlsx_processing.py`，对`data.xlsx`进行数据清洗
    	- `SparkApi.py`，大模型api
    	- `main.py`，调用api对清洗后的数据进行情感分析
-
+	
    	- `__pycache__` 文件夹，大模型内核
 
 - res
@@ -70,5 +80,4 @@
   	- `test.xlsx`, `xlsx.processing.py` 处理后的数据
   	- `new_test.xlsx`, 添加了情感分析后的数据
   
- 
-  
+   

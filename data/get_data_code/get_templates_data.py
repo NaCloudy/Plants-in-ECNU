@@ -41,7 +41,7 @@ for id_val in ids:
 
 ###step 5. 将merged_template存为json文件
 #路径需要根据自己文件位置修改一下
-path = r'D:\ECNU\23_4_fall\CS-object_oriented_python\prj\Plants in ECNU\data\all_templates.json'
+path = r'..\all_templates.json'
 
 with open(path, 'w', encoding='utf-8') as file:
   json.dump(merged_template, file, ensure_ascii=False, indent=4)

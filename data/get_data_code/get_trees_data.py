@@ -22,7 +22,7 @@ resp = requests.get(url, verify=False, headers = headers)
 json_data = json.loads(resp.text)
 
 #路径需要根据自己文件位置修改一下
-path = r'D:\ECNU\23_4_fall\CS-object_oriented_python\prj\Plants in ECNU\data\all_trees.json'
+path = r'..\all_trees.json'
 with open(path, 'w', encoding='utf-8') as file:
     json.dump(json_data, file, ensure_ascii=False, indent=4)
 print("JSON 数据已成功存储到 all_trees.json 文件中。")
