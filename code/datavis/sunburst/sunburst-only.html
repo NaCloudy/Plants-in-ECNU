@@ -38,21 +38,25 @@
                 "#fccde5",
                 "#FFE65F",
               ],
-              itemHeight: 200,
-              colorAlpha: 0.85,
             },
+            itemHeight: 300,
+            itemWidth: 30,
+            colorAlpha: 0.85,
+            calculable: true,
+            show: true,
+            right: "10%",
+            bottom: "5%",
           },
           series: {
             type: "sunburst",
             data: data,
-            sort: "aesc",
+            sort: "desc",
             radius: [0, "90%"],
             label: {
               rotate: "radial",
               minAngle: 1,
-            },
-            labelLine: {
-              show: true,
+              align: "center",
+              fontSize: 11,
             },
             labelLayout: {
               hideOverlap: true,
@@ -83,6 +87,11 @@
                 r: "98%",
               },
             ],
+          },
+          tooltip: {
+            show: true,
+            trigger: "item",
+            formatter: "{b}:{c}株",
           },
         };
 
