@@ -8,7 +8,7 @@ import pymysql
 app = Flask(__name__)
 
 # 设置密钥
-app.secret_key = "secret"
+app.secret_key = "abc"
 
 # 连接数据库
 db = pymysql.connect(host="localhost", user="root", password="20040512Whj", database="test")
@@ -17,6 +17,7 @@ cursor = db.cursor()
 # 创建登录管理对象
 login_manager = LoginManager()
 login_manager.init_app(app)
+login_manager.session_protection = 'strong'
 login_manager.login_view = "login"
 
 
@@ -97,7 +98,7 @@ def index():
     return render_template("index.html")
 
 
-@app.route("/login/", methods=["GET", "POST"])
+@app.route("/login", methods=["GET", "POST"])
 def login():
     form = LoginForm()
     emsg = None
@@ -117,7 +118,7 @@ def login():
     return render_template('login.html', form=form, emsg=emsg)
 
 
-@app.route("/signup/", methods=["GET", "POST"])
+@app.route("/register", methods=["GET", "POST"])
 def register():
     form = RegisterForm()
     emsg = None
@@ -131,7 +132,7 @@ def register():
             return redirect(url_for("login"))
         else:
             emsg = "用户名已存在"
-    return render_template('signup.html', form=form, emsg=emsg)
+    return render_template('register.html', form=form, emsg=emsg)
 
 
 @app.route("/logout")
