@@ -4,7 +4,7 @@
         <el-aside width="200px"><sidebar /></el-aside>
       <el-container>
         <el-main><router-view></router-view></el-main>
-        <el-footer>made by software-statistics united army</el-footer>
+        <el-footer style="position: absolute; bottom: 0; width: 100%;">made by software-statistics united army</el-footer>
       </el-container>
     </el-container>
   </div>

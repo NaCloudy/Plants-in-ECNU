@@ -13,12 +13,15 @@
 
             <el-col :span="6">
                 <el-card class="box-card">
-                    <div slot="header" class="clearfix">
+                    <div slot="header" class="clearfix" style="text-align: center; font-size: 24px; font-weight: bold;">
                         <span>植物信息</span>
                     </div>
                     <div class="plant-info">
                         <!-- Add some styles to the plant information -->
-                        <el-text class="plant-name">{{ selectedPlant.name }}</el-text>
+                        <div class="info-item">
+                            <span class="info-label">植物名称:</span>
+                            <el-text>{{ selectedPlant.name }}</el-text>
+                        </div>
                         <div class="info-item">
                             <span class="info-label">ID:</span>
                             <el-text>{{ selectedPlant.id }}</el-text>
@@ -307,12 +310,6 @@ const updateFilteredData = () => {
 
 .plant-info {
     padding: 20px;
-}
-
-.plant-name {
-    font-size: 24px;
-    font-weight: bold;
-    margin-bottom: 10px;
 }
 
 .info-item {
