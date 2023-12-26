@@ -5,6 +5,7 @@ const routes = [
     name: "login",
     meta: {
       title: "用户登录",
+      fullScreen: true
     },
     component: () => import("../login/login.vue"),
   },
@@ -36,7 +37,7 @@ const routes = [
     path: "/classify",
     name: "classify",
     meta: {
-      title: "植物分类",
+      title: "植物图表",
     },
     component: () => import("../views/classify.vue"),
   },

@@ -22,6 +22,11 @@ const option = {
             colorAlpha: 0.85,
         },
     },
+    tooltip: {
+        show: true,
+        trigger: "item",
+        formatter: "{b}:{c}株",
+    },
     series: {
         type: "sunburst",
         data: [

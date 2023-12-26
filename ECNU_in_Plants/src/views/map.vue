@@ -6,49 +6,17 @@
                 <topbar />
             </el-container>
             <div class="outline">
+                <div v-show ="currentComponent === 'plantmap'">
                 <div id="container"></div>
+            </div>
+                <div v-show ="currentComponent === 'plantlibrary'">
+                    <plantlibrary />
+                </div>
             </div>
 
             <!-- 植物信息卡片 -->
 
-            <el-col :span="6">
-                <el-card class="box-card">
-                    <div slot="header" class="clearfix" style="text-align: center; font-size: 24px; font-weight: bold;">
-                        <span>植物信息</span>
-                    </div>
-                    <div class="plant-info">
-                        <!-- Add some styles to the plant information -->
-                        <div class="info-item">
-                            <span class="info-label">植物名称:</span>
-                            <el-text>{{ selectedPlant.name }}</el-text>
-                        </div>
-                        <div class="info-item">
-                            <span class="info-label">ID:</span>
-                            <el-text>{{ selectedPlant.id }}</el-text>
-                        </div>
-                        <div class="info-item">
-                            <span class="info-label">学名:</span>
-                            <el-text>{{ selectedPlant.scientificName }}</el-text>
-                        </div>
-                        <div class="info-item">
-                            <span class="info-label">英文学名:</span>
-                            <el-text>{{ selectedPlant.scientificNameEn }}</el-text>
-                        </div>
-                        <div class="info-item">
-                            <span class="info-label">习性:</span>
-                            <el-text>{{ selectedPlant.habit }}</el-text>
-                        </div>
-                        <div class="info-item">
-                            <span class="info-label">分支:</span>
-                            <el-text>{{ selectedPlant.branch }}</el-text>
-                        </div>
-                        <div class="info-item">
-                            <span class="info-label">位置:</span>
-                            <el-text>{{ selectedPlant.place }}</el-text>
-                        </div>
-                    </div>
-                </el-card>
-            </el-col>
+            <plantcard />
         </el-row>
     </el-container>
 </template>
@@ -57,18 +25,18 @@
 import { ref, onMounted } from 'vue';
 import emitter from "../bus";
 import topbar from "./topbar.vue";
-import TestJson from '../assets/all_templates.json';
-import TreeJson from '../assets/all_trees.json';
 import TryJson from '../assets/try.json';
+import plantcard from './plantcard.vue';
+import plantlibrary from './plantlibrary.vue';
 
-let tryJsonData = ref(TryJson);// 使用 ref 使其具有响应性
-var selecteddata = tryJsonData.value;
-var icondata = tryJsonData.value;
+var selecteddata = TryJson;
+var icondata = TryJson;
 var filteredData = [];
 
 var marker = null;
 var map = null;
 var markersArray = [];
+const currentComponent = ref('plantmap');
 
 const selectedPlant = ref
     ({
@@ -78,14 +46,17 @@ const selectedPlant = ref
         scientificNameEn: '',
         habit: '',
         branch: '',
-        place: ''
+        place: '',
+        number: '',
+        hasOwner: '',
+        key_phrase: ''
     });
 
     const center = ref({ lat: 31.227073, lng: 121.406079 });
     // 创建并初始化地图
     
 const initMap = () => {
-    
+    // 如果使用 v-if的话地图重复加载id，故选择 v-show
     map = new (window as any).TMap.Map(document.getElementById('container'), {
         center: center.value,
         zoom: 18,
@@ -110,6 +81,15 @@ const initMap = () => {
             selecteddata = TryJson;
         }
         console.log(selecteddata);
+    });
+
+    emitter.on('modelChange', (model: string) => {
+        if (model === '地图') {
+            currentComponent.value = 'plantmap';
+            initMap();
+        } else {
+            currentComponent.value = 'plantlibrary';
+        } 
     });
 
     // 获取缩放控件
@@ -138,10 +118,13 @@ const initMap = () => {
                         "name": selecteddata[i].template.name,
                         "scientificName": selecteddata[i].template.scientificName,
                         "scientificNameEn": selecteddata[i].template.scientificNameEn,
-                        "id": selecteddata[i].number,
+                        "id": selecteddata[i].id,
                         "habit": selecteddata[i].template.habit,
                         "branch": selecteddata[i].template.branch,
                         "place": selecteddata[i].place,
+                        "number": selecteddata[i].number,
+                        "hasOwner": selecteddata[i].hasOwner,
+                        "key_phrase": selecteddata[i].key_phrase,
                     }
                 }
             ],
@@ -164,12 +147,12 @@ const initMap = () => {
         marker.on("click", (evt: {
             geometry: {
                 position: any; properties:
-                { name: any; id: any; scientificName: any; scientificNameEn: any; habit: any; branch: any; place: any; }
+                { name: any; id: any; scientificName: any; scientificNameEn: any; habit: any; branch: any; place: any; number: any; hasOwner: any; key_phrase: any;}
             };
         }) => {
             infoWindow.open();
             infoWindow.setPosition(evt.geometry.position);
-            infoWindow.setContent(evt.geometry.properties.name + evt.geometry.properties.id);
+            infoWindow.setContent(evt.geometry.properties.name);
             //点击后右边出现介绍植物的卡片
             // 设置selectedPlant数据
             selectedPlant.value = {
@@ -180,15 +163,28 @@ const initMap = () => {
                 habit: evt.geometry.properties.habit,
                 branch: evt.geometry.properties.branch,
                 place: evt.geometry.properties.place,
+                number: evt.geometry.properties.number,
+                hasOwner: evt.geometry.properties.hasOwner,
+                key_phrase: evt.geometry.properties.key_phrase,
             };
             console.log(evt.geometry.properties);
+            emitter.emit('plantvalueChange',selectedPlant.value)
         });
     };
 };
 
 
 onMounted(() => {
-    initMap();
+    nextTick(() => {
+        initMap();
+    });
+});
+
+onUpdated(() => {
+    nextTick(() => {
+        // 在组件更新时重新初始化地图，确保地图容器可见
+        initMap();
+    });
 });
 
 emitter.on('iconChange', (iconkind: string) => {
@@ -216,8 +212,10 @@ emitter.on('selectedChange', (select: string) => {
     // 根据两个筛选更新filteredData的函数
 const updateFilteredData = () => {
     // 应用两个筛选条件（'icondata'和'selecteddata'）
-    filteredData = icondata.filter(item => selecteddata.includes(item));
-    
+    filteredData = selecteddata.filter(item => icondata.includes(item));
+    console.log(filteredData)
+    console.log(icondata)
+    console.log(selecteddata)
     // 根据filteredData更新地图上的标记
     updateMarkers();
 };
@@ -248,10 +246,13 @@ const updateFilteredData = () => {
                         "name": filteredData[i].template.name,
                         "scientificName": filteredData[i].template.scientificName,
                         "scientificNameEn": filteredData[i].template.scientificNameEn,
-                        "id": filteredData[i].number,
+                        "id": filteredData[i].id,
                         "habit": filteredData[i].template.habit,
                         "branch": filteredData[i].template.branch,
                         "place": filteredData[i].place,
+                        "number": filteredData[i].number,
+                        "hasOwner": filteredData[i].hasOwner,
+                        "key_phrase": filteredData[i].key_phrase,
                     }
                 }
             ],
@@ -272,12 +273,12 @@ const updateFilteredData = () => {
         marker.on("click", (evt: {
             geometry: {
                 position: any; properties:
-                { name: any; id: any; scientificName: any; scientificNameEn: any; habit: any; branch: any; place: any; }
+                { name: any; id: any; scientificName: any; scientificNameEn: any; habit: any; branch: any; place: any; number: any; hasOwner: any; key_phrase: any;}
             };
         }) => {
             infoWindow.open();
             infoWindow.setPosition(evt.geometry.position);
-            infoWindow.setContent(evt.geometry.properties.name + evt.geometry.properties.id);
+            infoWindow.setContent(evt.geometry.properties.name);
             //点击后右边出现介绍植物的卡片
             // 设置selectedPlant数据
             selectedPlant.value = {
@@ -288,14 +289,18 @@ const updateFilteredData = () => {
                 habit: evt.geometry.properties.habit,
                 branch: evt.geometry.properties.branch,
                 place: evt.geometry.properties.place,
+                number: evt.geometry.properties.number,
+                hasOwner: evt.geometry.properties.hasOwner,
+                key_phrase: evt.geometry.properties.key_phrase,
             };
             console.log(evt.geometry.properties);
+            emitter.emit('plantvalueChange',selectedPlant.value)
         });
     }
 
     };
 </script>
-<style lang="scss">
+<style lang="scss" scoped>
 .outline {
     width: 70%;
     margin-right: 20px;

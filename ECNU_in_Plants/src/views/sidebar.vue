@@ -30,7 +30,7 @@
             <el-icon>
                 <Menu />
             </el-icon>
-            <template #title>植物分类</template>
+            <template #title>植物图表</template>
         </el-menu-item>
         <el-menu-item index="/plantmessage">
             <el-icon>

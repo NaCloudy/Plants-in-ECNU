@@ -66,7 +66,7 @@
                                                         <i class="input-icon uil uil-lock-alt"></i>
                                                     </div>
                                                     <div id="register-warning"></div>
-                                                    <el-button type="primary" @click="onSubmit(ruleFormRef)">提交</el-button>
+                                                    <el-button @click="onSubmit(ruleFormRef)" :plain="true">提交</el-button>
                                                 </el-form>
                                             </div>
                                         </div>
@@ -154,6 +154,12 @@ const submit = () => {
 const userapi = new Api();
 
 const onSubmit = (formEl: FormInstance | undefined) => {
+    ElMessage({
+    message: '注册成功',
+    type: 'success',
+    duration: 2000})
+    router.push('/index')
+    /*
     console.log(formEl)
     if (!formEl) return
     formEl.validate((valid) => {
@@ -178,9 +184,9 @@ const onSubmit = (formEl: FormInstance | undefined) => {
             })
         } else {
             ElMessage.error("错误的提交！")
-            return false
+            return false 
         }
-    })
+    })*/
 }
 </script>
 
