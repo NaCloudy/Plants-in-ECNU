@@ -1,7 +1,5 @@
 <template>
     <div style="margin-top: 20px;">
-        <el-radio-group v-model="school" size="large" style="margin-left: 20px;">
-
             <el-radio-group v-model="school" size="large" @change="handleCampusChange">
                 <el-radio-button label="中北" />
                 <el-radio-button label="闵行" />
@@ -18,7 +16,10 @@
                 <el-radio-button label="已认领" />
                 <el-radio-button label="未认领" />
             </el-radio-group>
-        </el-radio-group>
+            <el-radio-group v-model="model" size="large" style="margin-left: 80px;" @change="ModelChange">
+                <el-radio-button label="地图" />
+                <el-radio-button label="植物库" />
+            </el-radio-group>
     </div>
 </template>
 
@@ -31,6 +32,7 @@ const router = useRouter();
 const school = ref('中北')
 const select = ref('全部')
 const iconkind = ref('全部')
+const model = ref('地图')
 // 提供泛型参数让 emitter 能自动推断参数类型
 
 const handleCampusChange = () => {
@@ -46,6 +48,11 @@ const SelectedChange = () => {
 const IconChange = () => {
     emitter.emit('iconChange', iconkind.value);
     console.log(iconkind.value);
+}
+
+const ModelChange = () => {
+    emitter.emit('modelChange', model.value);
+    console.log(model.value);
 }
 
 /*  <div class="demo-type">

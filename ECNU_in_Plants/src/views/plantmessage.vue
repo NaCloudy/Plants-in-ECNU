@@ -8,13 +8,15 @@
         </div>
     </div>
 </template>
-  
+
 <script setup lang="ts">
 import Emotionmessage from './message.vue'
 import wordCloud from './wordcloud.vue'
+import emitter from "../bus";
+
 </script>
-  
-<style lang="scss">
+
+<style lang="scss" scoped>
 .container {
     display: flex;
 }
@@ -29,4 +31,3 @@ import wordCloud from './wordcloud.vue'
     flex: 1;
 }
 </style>
-  
