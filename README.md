@@ -4,7 +4,7 @@
 
 - `all_trees.json`，所有植物的信息（不含template中的长文本）
 - `all_templates.json`，所有植物类型templates的详细信息（包含长文本）
-- `all_trees_for_lib.json`，添加植物文化关键词"key_phrase"和领养人信息"hasOwner"了的所有植物信息 
+- `all_trees_for_lib.json`，添加植物文化关键词"key_phrase"、领养人信息"hasOwner"、领养记录更新时间"ownerTime"的所有植物信息 
 - `notes_charles.md`，关于charles的使用备忘&获取到的有用url
 - `notes_data_structure.md`，描述了`all_trees.json`和`all_templates.json`的数据结构及各个字段含义
 - icon
