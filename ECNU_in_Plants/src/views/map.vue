@@ -49,7 +49,8 @@ const selectedPlant = ref
         place: '',
         number: '',
         hasOwner: '',
-        key_phrase: ''
+        key_phrase: '',
+        updatetime: ''
     });
 
     const center = ref({ lat: 31.227073, lng: 121.406079 });
@@ -125,6 +126,7 @@ const initMap = () => {
                         "number": selecteddata[i].number,
                         "hasOwner": selecteddata[i].hasOwner,
                         "key_phrase": selecteddata[i].key_phrase,
+                        "updatetime": selecteddata[i].updatedAt,
                     }
                 }
             ],
@@ -147,7 +149,7 @@ const initMap = () => {
         marker.on("click", (evt: {
             geometry: {
                 position: any; properties:
-                { name: any; id: any; scientificName: any; scientificNameEn: any; habit: any; branch: any; place: any; number: any; hasOwner: any; key_phrase: any;}
+                { name: any; id: any; scientificName: any; scientificNameEn: any; habit: any; branch: any; place: any; number: any; hasOwner: any; key_phrase: any; updatetime: any;}
             };
         }) => {
             infoWindow.open();
@@ -166,6 +168,7 @@ const initMap = () => {
                 number: evt.geometry.properties.number,
                 hasOwner: evt.geometry.properties.hasOwner,
                 key_phrase: evt.geometry.properties.key_phrase,
+                updatetime: evt.geometry.properties.updatetime,
             };
             console.log(evt.geometry.properties);
             emitter.emit('plantvalueChange',selectedPlant.value)
@@ -253,6 +256,7 @@ const updateFilteredData = () => {
                         "number": filteredData[i].number,
                         "hasOwner": filteredData[i].hasOwner,
                         "key_phrase": filteredData[i].key_phrase,
+                        "updatetime": filteredData[i].updatedAt,
                     }
                 }
             ],
@@ -273,7 +277,7 @@ const updateFilteredData = () => {
         marker.on("click", (evt: {
             geometry: {
                 position: any; properties:
-                { name: any; id: any; scientificName: any; scientificNameEn: any; habit: any; branch: any; place: any; number: any; hasOwner: any; key_phrase: any;}
+                { name: any; id: any; scientificName: any; scientificNameEn: any; habit: any; branch: any; place: any; number: any; hasOwner: any; key_phrase: any; updatetime: any;}
             };
         }) => {
             infoWindow.open();
@@ -292,6 +296,7 @@ const updateFilteredData = () => {
                 number: evt.geometry.properties.number,
                 hasOwner: evt.geometry.properties.hasOwner,
                 key_phrase: evt.geometry.properties.key_phrase,
+                updatetime: evt.geometry.properties.updatetime,
             };
             console.log(evt.geometry.properties);
             emitter.emit('plantvalueChange',selectedPlant.value)
