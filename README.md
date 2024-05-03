@@ -1,6 +1,10 @@
-# Plants-in-ECNU
+# Plants in ECNU 文件目录
 
-### data文件夹
+[TOC]
+
+### data
+
+#### ***数据获取与分析部分***
 
 - `all_trees.json`，所有植物的信息（不含template中的长文本）
 - `all_templates.json`，所有植物类型templates的详细信息（包含长文本）
@@ -25,6 +29,8 @@
 	- `icon.txt`，对`icon.json`进行修改以用于下载的代码
 
 ### statmodel
+
+#### ***机器学习模型部分***
 
 - => 用来预测下一棵最有可能被领养的树
 
@@ -88,7 +94,40 @@
 >
 > （3）被认养概率`pre_1`取值最大的，或者在`pred`取值为 1 的那些里random
 
+### culture
+
+#### ***数据分析 - 自然语言处理 - 文化关键词***
+
+### ana_emo
+
+#### ***数据分析 - 自然语言处理 - 领养寄语情感分析***
+
+- raw_data
+
+	- => 用于情感分析的源数据
+	- `data.xlsx`， 每棵植物上的题词与留言
+
+- code
+
+	- => 调用讯飞星火大模型的Python接口，针对raw_data文件夹下的数据进行情感分析
+	- `xlsx_processing.py`，对`data.xlsx`进行数据清洗
+	- `SparkApi.py`，大模型api
+	- `main.py`，调用api对清洗后的数据进行情感分析
+
+	- `__pycache__` 文件夹，大模型内核
+
+- res
+	- => 数据处理后的结果
+	- `test.xlsx`, `xlsx.processing.py` 处理后的数据
+	-  `new_test.xlsx`, 添加了情感分析后的数据 
+
+### wordcloud
+
+#### ***数据可视化 - 寄语词云***
+
 ### datavis
+
+#### ***数据可视化 - 图表可视化***
 
 - => 数据可视化
 - sankey
@@ -106,25 +145,14 @@
   - `parallel.ipynb`，用于生成平行坐标轴的python代码
   - `parallel.html`，生成的平行坐标轴html
 
-### ana_emo文件夹
+### prototype
 
-- raw_data
-  
-  	- => 用于情感分析的源数据
-  	- `data.xlsx`， 每棵植物上的题词与留言
+#### ***网页原型设计***
 
-- code
+### login
 
-   	- => 调用讯飞星火大模型的Python接口，针对raw_data文件夹下的数据进行情感分析
-   	- `xlsx_processing.py`，对`data.xlsx`进行数据清洗
-   	- `SparkApi.py`，大模型api
-   	- `main.py`，调用api对清洗后的数据进行情感分析
-		
-   	- `__pycache__` 文件夹，大模型内核
+#### ***登录数据库***
 
-- res
-  	- => 数据处理后的结果
-  	- `test.xlsx`, `xlsx.processing.py` 处理后的数据
-  	- `new_test.xlsx`, 添加了情感分析后的数据
-  
-   
+### ECNU-in-Plants
+
+#### ***网页端代码***
