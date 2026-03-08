@@ -1,158 +1,124 @@
-# Plants in ECNU 文件目录
+# 🌱 Plants in ECNU
 
-[TOC]
+> 华东师范大学校园植物数据可视化平台
 
-### data
+华东师范大学的校园中开放了一套植物领养系统，学生和校友可以认养校内植物并留下寄语。本项目通过爬取微信小程序「芳秾」的数据，对校园植物和领养情况进行了全方位的数据分析与可视化。
 
-#### ***数据获取与分析部分***
+---
 
-- `all_trees.json`，所有植物的信息（不含template中的长文本）
-- `all_templates.json`，所有植物类型templates的详细信息（包含长文本）
-- `all_trees_for_lib.json`，添加植物文化关键词"key_phrase"、领养人信息"hasOwner"、领养记录更新时间"ownerTime"的所有植物信息 
-- `notes_charles.md`，关于charles的使用备忘&获取到的有用url
-- `notes_data_structure.md`，描述了`all_trees.json`和`all_templates.json`的数据结构及各个字段含义
-- icon
-	- => 存放植物图标图片的文件夹
-	- 里面每个文件的名称都是`xxx.jpg`，命名同icon字段中url内图片的名称
+## 功能模块
 
+### 🗺️ 交互式地图
+- 基于腾讯地图 API 的植物点聚合地图，展示植物在各校区的分布
 
-- get_data_code
-  - => 获取植物信息的爬虫代码
-  - `get_trees_data.py`，爬取植物信息的代码，其结果为`all_trees.json`
-  - `get_templates_data.py`，在`get_trees_data.py`的基础上爬取植物信息的代码，其结果为`all_templates.json`
+### 📊 数据可视化
+- **桑基图**：领养植物的学院 × 植物种类分布
+- **旭日图**：全校植物按科目、种类的层级分布
+- **平行坐标轴**：植物树高、胸径、冠幅等维度比较
 
+### ☁️ 词云
+- 对领养寄语进行分词，生成词云图
 
-- get_icon_code
-	- => 获取植物图标的代码
-	- `get_icon.ipynb`，从`all_templates.json`中获取icon字段url并保存为`icon.json`的代码
-	- `icon.json`，存放了植物图标的url
-	- `icon.txt`，对`icon.json`进行修改以用于下载的代码
+### 🤖 领养预测
+- 逻辑回归 + SVM 模型，预测最可能被下一个认养的植物（AUC 0.99）
 
-### statmodel
+### 💬 情感分析
+- 调用讯飞星火大模型 API，对领养寄语进行情感分析
 
-#### ***机器学习模型部分***
+### 🌐 Web 应用
+- Vue 3 前端 + Python 后端，支持登录、植物浏览、寄语查看、个人中心等功能
 
-- => 用来预测下一棵最有可能被领养的树
+---
 
-	- reg
+## 项目结构
 
-		- => 使用logistics回归模型
-		- `pred_tree_reg.ipynb`，模型代码，使用aic筛选变量，逻辑回归拟合。
-		- `pred_tree_reg.csv`，便于用excel查看的结果。
-		- `pred_result_reg.json`，便于用于网页的结果。**pred_1**表示被领养的概率。
+```
+Plants-in-ECNU/
+├── data/                        # 数据爬取与处理
+│   ├── all_trees.json           # 所有植物信息（位置、尺寸、领养人）
+│   ├── all_templates.json       # 植物种类详情（科、习性）
+│   ├── all_trees_for_lib.json   # 附加文化关键词的完整数据
+│   ├── get_data_code/           # 爬虫脚本（Charles 抓包 + Python）
+│   └── icon/                    # 植物图标图片
+│
+├── analysis/                    # 数据分析
+│   ├── emotion/                 # 领养寄语情感分析（讯飞星火 API）
+│   ├── culture/                 # 植物文化关键词提取（NLP）
+│   └── prediction/              # 领养预测模型
+│       ├── reg/                 # 逻辑回归（AIC 筛变量）
+│       └── svm/                 # SVM（准确率 0.75 / AUC 0.99）
+│
+├── visualization/               # 静态可视化
+│   ├── charts/                  # 桑基图 / 旭日图 / 平行坐标轴
+│   └── wordcloud/               # 词云
+│
+├── webapp/                      # Web 应用
+│   ├── frontend/                # Vue 3 + TypeScript + ECharts 前端
+│   └── backend/                 # Python Flask + MySQL 后端
+│
+└── prototype/                   # UI 原型设计（墨刀）
+```
 
-	- svm
+---
 
-		- => 使用SVM分类模型
+## 技术栈
 
-		- `pred_tree_svm.ipynb`，模型代码，使用支持向量机进行分类，训练比例为0.7，样本权重为{1:10}。对模型的评估包括准确率（训练0.75，测试0.73）、召回率（1）、混淆矩阵、ROC曲线、AUC值（0.99）、最佳阈值Youden Index（0.996836）。
+| 模块 | 技术 |
+|------|------|
+| 前端 | Vue 3 · TypeScript · Vite · ECharts 5 · Element Plus · D3.js |
+| 后端 | Python · Flask · MySQL |
+| 数据爬取 | Python · Charles 抓包 |
+| 数据分析 | Jupyter Notebook · Pandas · scikit-learn |
+| NLP | 讯飞星火大模型 API · Pyecharts |
+| 地图 | 腾讯地图 JavaScript API |
 
-			- 训练集上的混淆矩阵为
-				$$
-				预测值 \ \
-				0 \quad\quad 1 \\
-				
-				真实值 \ 
-				\begin{array}{cccc} 
-					0\\ 
-					1\\
-				\end{array}
-				
-				\left [\begin{array}{cccc} 
-					106 & 2 \\ 
-					515 & 1460\\
-				\end{array} \right]
-				$$
+---
 
-			- 测试集上的混淆矩阵为
+## 数据说明
 
-			$$
-			预测值 \ \
-			0 \quad\quad 1 \\
-			
-			真实值 \
-			\begin{array}{cccc} 
-				0\\ 
-				1\\
-			\end{array}
-			
-			\left [\begin{array}{cccc} 
-				49 & 0 \\ 
-				245 & 599\\
-			\end{array} \right]
-			$$
+数据来源于华东师范大学微信小程序「芳秾」，涵盖**闵行校区**和**中北校区**的全部在册植物。
 
-			
+主要字段：
+- `id` / `place`（校区）/ `longitude` / `latitude`（经纬度）
+- `height`（树高，米）/ `radius`（胸径，cm）/ `subHeight`（冠幅，米）
+- `template`（植物种类，含科名、习性）
+- `owner`（领养人姓名、单位、寄语）
 
-		- `pred_tree_svm.csv`，便于用excel查看的结果。
+---
 
-		- `pred_result_svm.json`，便于用于网页的结果。**pred**表示被预测为领养还是不领养，**pred_1**表示被领养的概率。
+## 快速开始
 
-> （1）筛选所有未被认养的（`owner`取值为0）
->
-> （2）【可选】根据用户条件再筛选，如校区`place`、植物品种`template`、植物习性`habit`
->
-> （3）被认养概率`pre_1`取值最大的，或者在`pred`取值为 1 的那些里random
+### 前端开发
 
-### culture
+```bash
+cd webapp/frontend
+npm install
+npm run dev
+```
 
-#### ***数据分析 - 自然语言处理 - 文化关键词***
+### 后端
 
-### ana_emo
+```bash
+cd webapp/backend
+python server.py
+```
 
-#### ***数据分析 - 自然语言处理 - 领养寄语情感分析***
+---
 
-- raw_data
+## 项目来源
 
-	- => 用于情感分析的源数据
-	- `data.xlsx`， 每棵植物上的题词与留言
+本项目由早期课程项目 **[PlantsInECNU](https://github.com/NaCloudy/PlantsInECNU)** 迭代而来。
 
-- code
+原项目为静态可视化版本，包含植物分布图（HTML + D3.js）、初步数据爬取和词云生成。本项目在此基础上进行了全面重构与扩展：
 
-	- => 调用讯飞星火大模型的Python接口，针对raw_data文件夹下的数据进行情感分析
-	- `xlsx_processing.py`，对`data.xlsx`进行数据清洗
-	- `SparkApi.py`，大模型api
-	- `main.py`，调用api对清洗后的数据进行情感分析
+- 数据规模扩大，覆盖闵行、中北双校区全部在册植物
+- 从静态页面升级为 Vue 3 全栈 Web 应用
+- 新增 ML 预测模型（逻辑回归 + SVM）
+- 新增 NLP 情感分析（讯飞星火 API）
+- 新增多种交互式图表（桑基图、旭日图、平行坐标轴）
 
-	- `__pycache__` 文件夹，大模型内核
+---
 
-- res
-	- => 数据处理后的结果
-	- `test.xlsx`, `xlsx.processing.py` 处理后的数据
-	-  `new_test.xlsx`, 添加了情感分析后的数据 
+## 团队
 
-### wordcloud
-
-#### ***数据可视化 - 寄语词云***
-
-### datavis
-
-#### ***数据可视化 - 图表可视化***
-
-- => 数据可视化
-- sankey
-	- => 桑基图，展示认养植物所属学院&植物类型
-	- `sankey.ipynb`，用于生成桑基图的python代码
-	- `sankey.html`，生成的桑基图html
-	- `data_for_sankey.json`，用于sankey图数据可视化，里面是手动修改过学院的所有owner数据
-- sunburst
-  - => 旭日图，展示校内登记的植物分布
-  - `sunburst.ipynb`，用于生成旭日图所需数据
-  - `sunburst.html`，定义旭日图
-  - `data_for_sunburst.json`，用于sunburst图数据可视化
-- parallel
-  - => 平行坐标轴，展示校内植物的高度、胸径等维度数据
-  - `parallel.ipynb`，用于生成平行坐标轴的python代码
-  - `parallel.html`，生成的平行坐标轴html
-
-### prototype
-
-#### ***网页原型设计***
-
-### login
-
-#### ***登录数据库***
-
-### ECNU-in-Plants
-
-#### ***网页端代码***
+课程项目，华东师范大学。

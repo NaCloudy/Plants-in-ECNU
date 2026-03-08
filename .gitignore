@@ -1,0 +1,23 @@
+# Claude AI tool config
+CLAUDE.md
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.env
+.venv
+venv/
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Node / Vue frontend
+webapp/frontend/node_modules/
+webapp/frontend/dist/
+webapp/frontend/dist-ssr/
+webapp/frontend/*.local
+
+# OS
+.DS_Store
+Thumbs.db
