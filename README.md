@@ -6,31 +6,36 @@
 
 ---
 
-## 功能模块
+## 🖥️ 如何查看
 
-### 🗺️ 交互式地图
-- 基于腾讯地图 API 的植物点聚合地图，展示植物在各校区的分布
+### 方式一：直接打开静态图表（无需安装任何环境）
 
-### 📊 数据可视化
-- **桑基图**：领养植物的学院 × 植物种类分布
-- **旭日图**：全校植物按科目、种类的层级分布
-- **平行坐标轴**：植物树高、胸径、冠幅等维度比较
+下载仓库后，用浏览器直接打开以下 HTML 文件：
 
-### ☁️ 词云
-- 对领养寄语进行分词，生成词云图
+| 图表 | 路径 | 内容 |
+|------|------|------|
+| 桑基图 | `visualization/charts/sankey/sankey.html` | 领养植物的学院 × 植物种类分布 |
+| 旭日图 | `visualization/charts/sunburst/sunburst-only.html` | 全校植物按科目、种类的层级分布 |
+| 平行坐标轴 | `visualization/charts/parallel/parallel.html` | 植物树高、胸径、冠幅等维度比较 |
+| 词云 | `visualization/wordcloud/res/exp.html` | 领养寄语词云 |
 
-### 🤖 领养预测
-- 逻辑回归 + SVM 模型，预测最可能被下一个认养的植物（AUC 0.99）
+### 方式二：运行 Vue 3 主网站（需要 Node.js 18+）
 
-### 💬 情感分析
-- 调用讯飞星火大模型 API，对领养寄语进行情感分析
+主网站包含交互式地图、植物图鉴、寄语浏览、领养预测等完整功能。
 
-### 🌐 Web 应用
-- Vue 3 前端 + Python 后端，支持登录、植物浏览、寄语查看、个人中心等功能
+```bash
+cd webapp/frontend
+npm install
+npm run dev
+```
+
+启动后在浏览器打开 `http://localhost:5173`
+
+> 注意：地图功能依赖腾讯地图 API，本地运行时可能需要配置 API Key。
 
 ---
 
-## 项目结构
+## 📁 项目结构
 
 ```
 Plants-in-ECNU/
@@ -48,20 +53,31 @@ Plants-in-ECNU/
 │       ├── reg/                 # 逻辑回归（AIC 筛变量）
 │       └── svm/                 # SVM（准确率 0.75 / AUC 0.99）
 │
-├── visualization/               # 静态可视化
+├── visualization/               # 静态可视化（直接用浏览器打开）
 │   ├── charts/                  # 桑基图 / 旭日图 / 平行坐标轴
 │   └── wordcloud/               # 词云
 │
-├── webapp/                      # Web 应用
+├── webapp/                      # 主网站
 │   ├── frontend/                # Vue 3 + TypeScript + ECharts 前端
 │   └── backend/                 # Python Flask + MySQL 后端
 │
-└── prototype/                   # UI 原型设计（墨刀）
+└── prototype/                   # UI 原型设计
 ```
 
 ---
 
-## 技术栈
+## ✨ 功能模块
+
+- **交互式地图**：基于腾讯地图 API 的植物点聚合地图，展示各校区植物分布
+- **植物图鉴**：按种类、校区筛选浏览全部在册植物
+- **领养寄语**：查看每棵植物的认养人和留言
+- **领养预测**：逻辑回归 + SVM 预测最可能被认养的植物（AUC 0.99）
+- **情感分析**：讯飞星火大模型对寄语内容的情感分析
+- **静态图表**：桑基图、旭日图、平行坐标轴、词云
+
+---
+
+## 🛠️ 技术栈
 
 | 模块 | 技术 |
 |------|------|
@@ -74,34 +90,11 @@ Plants-in-ECNU/
 
 ---
 
-## 数据说明
+## 📊 数据说明
 
 数据来源于华东师范大学微信小程序「芳秾」，涵盖**闵行校区**和**中北校区**的全部在册植物。
 
-主要字段：
-- `id` / `place`（校区）/ `longitude` / `latitude`（经纬度）
-- `height`（树高，米）/ `radius`（胸径，cm）/ `subHeight`（冠幅，米）
-- `template`（植物种类，含科名、习性）
-- `owner`（领养人姓名、单位、寄语）
-
----
-
-## 快速开始
-
-### 前端开发
-
-```bash
-cd webapp/frontend
-npm install
-npm run dev
-```
-
-### 后端
-
-```bash
-cd webapp/backend
-python server.py
-```
+主要字段：位置（经纬度）、校区、树高 / 胸径 / 冠幅、植物种类（含科名、习性）、领养人信息（姓名、单位、寄语）。
 
 ---
 
