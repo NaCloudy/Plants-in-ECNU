@@ -1,5 +1,6 @@
 # Claude AI tool config
 CLAUDE.md
+.claude/
 
 # Python
 __pycache__/
